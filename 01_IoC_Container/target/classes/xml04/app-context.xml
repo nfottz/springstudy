@@ -9,7 +9,7 @@
 		<property name="user" value="GDJ61" />
 		<property name="password" value="1111" />
 	</bean>
-
+	
 	<!-- 
 		<bean> 태그의 scope 속성
 		
@@ -21,4 +21,6 @@
 			2) getBean() 메소드로 bean을 요청할 때마다 새로운 bean을 계속 만든다.
 	 -->
 
+	<bean id="dao" class="com.gdu.app01.xml04.MyDAO" scope="singleton" />
+	
 </beans>
