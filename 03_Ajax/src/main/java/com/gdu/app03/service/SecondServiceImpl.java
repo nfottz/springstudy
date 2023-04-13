@@ -18,6 +18,10 @@ public class SecondServiceImpl implements ISecondService {
 			double weight = Double.parseDouble(request.getParameter("weight"));
 			double height = Double.parseDouble(request.getParameter("height")) / 100;
 			
+			if(weight < 0 || weight > 400 || height < 0 || height > 3) {
+				throw new RuntimeException();
+			}
+			
 			double bmi = weight / (height * height);
 			String obesity = null;
 			if(bmi < 18.5) obesity = "저체중";
