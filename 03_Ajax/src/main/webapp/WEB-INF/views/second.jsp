@@ -24,13 +24,28 @@
 			error: function(jqXHR){
 				$('#bmi').text('');
 				$('#obesity').text('');
-				alert(jqXHR.responseText);
+				// alert(jqXHR.responseText + '(' + jqXHR.status + ')');
+				if(jqXHR.status == 500){
+					alert('몸무게와 키 입력을 확인하세요.');
+				}
 			}
 		})
 	}
 	
 	function fnBmi2(){
 		$('#result').empty();
+		
+		let weight = $('#weight').val();
+		if(weight == '' || Number(weight) < 0 || isNaN(weight)){
+			alert('몸무게를 확인하세요.');
+			return;
+		}
+		
+		let height = $('#height').val();
+		if(height == '' || Number(height) < 0 || isNaN(height)){
+			alert('키를 확인하세요.');
+			return;
+		}
 		
 		$.ajax({
 			type: 'get',
@@ -40,6 +55,14 @@
 			success: function(resData){
 				$('#bmi').text(resData.bmi);
 				$('#obesity').text(resData.obesity);
+			},
+			error: function(jqXHR){
+				$('#bmi').text('');
+				$('#obesity').text('');
+				// alert(jqXHR.responseText);
+				if(jqXHR.status == 400){
+					alert('몸무게와 키는 0이 될 수 없습니다.');
+				}
 			}
 		})
 	}
