@@ -16,7 +16,7 @@
 </head>
 <body>
 
-	
+	게시판
 	
 </body>
 </html>

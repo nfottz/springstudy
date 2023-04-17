@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gdu.app04.domain.BoardDTO;
+import com.gdu.app04.repository.BoardDAO;
 
 /*
 	@Component
@@ -27,12 +28,12 @@ import com.gdu.app04.domain.BoardDTO;
 public class BoardServiceImpl implements BoardService {
 	
 	@Autowired
-	private BoardService boardService;
+	private BoardDAO boardDAO;
 	
 	@Override
 	public List<BoardDTO> getBoardList() {
 		// TODO Auto-generated method stub
-		return null;
+		return boardDAO.selectBoardList();
 	}
 
 	@Override
