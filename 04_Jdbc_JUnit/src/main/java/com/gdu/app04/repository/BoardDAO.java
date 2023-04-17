@@ -91,23 +91,23 @@ public class BoardDAO {
 	}
 	
 	// 3. 삽입
-	public int insertBoard(BoardDTO board) {
-		int result = 0;
-		try {
-			con = getConnection();
-			sql = "INSERT INTO BOARD VALUES(BOARD_SEQ.NEXTVAL, ?, ?, ?, TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')";
-			ps = con.prepareStatement(sql);
-			ps.setString(1, board.getTitle());
-			ps.setString(2, board.getContent());
-			ps.setString(3, board.getWriter());
-			result = ps.executeUpdate();
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		return result;
-	}
+   public int insertBoard(BoardDTO board) {
+	   int result = 0;
+	      try {
+	         con = getConnection();
+	         sql = "INSERT INTO BOARD VALUES(BOARD_SEQ.NEXTVAL, ?, ?, ?, TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'))";                      
+         ps = con.prepareStatement(sql);
+         ps.setString(1, board.getTitle());
+         ps.setString(2, board.getContent());
+         ps.setString(3, board.getWriter());
+         result = ps.executeUpdate();
+      }catch(Exception e) {
+         e.printStackTrace();
+      }finally {
+         close();
+      }
+      return result;
+   }
 	
 	// 4. 수정
 	public int updateBoard(BoardDTO board) {
