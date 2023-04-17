@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.gdu</groupId>
 	<artifactId>app02</artifactId>
-	<name>02_Mvc</name>
+	<name>03_Ajax</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
