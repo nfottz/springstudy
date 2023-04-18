@@ -10,13 +10,26 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="${contextPath }/resources/js/lib/jquery-3.6.4.min.js"></script>
-<script src="${contextPath }/resources/summernote-0.8.18-dist/summernote-lite.min.js"></script>
-<script src="${contextPath }/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js"></script>
-<link rel="stylesheet" href="${contextPath }/resources/summernote-0.8.18-dist/summernote-lite.min.css">
 </head>
 <body>
 
-	<a href="${contextPath }/board/list.do">게시판</a>
+	<!-- EL 사용이 가능한 영역 : pageContext, request, session, application -->
+	
+	<h1>${boardNo }</h1>
+	<h1>${title }</h1>
+	
+	<hr>
+	
+	<!-- boardDTO -->
+	<h1> a, location </h1>
+	<h1>${boardDTO.boardNo }</h1>
+	<h1>${boardDTO.title }</h1>
+	
+	<hr>
+	
+	<!-- board -->
+	<h1> form </h1>
+	<h1>${board.boardNo }</h1>
+	<h1>${board.title }</h1>
 	
 </body>
-</html>
