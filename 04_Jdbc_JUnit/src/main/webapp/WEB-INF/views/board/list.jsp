@@ -13,6 +13,17 @@
 <script src="${contextPath }/resources/summernote-0.8.18-dist/summernote-lite.min.js"></script>
 <script src="${contextPath }/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js"></script>
 <link rel="stylesheet" href="${contextPath }/resources/summernote-0.8.18-dist/summernote-lite.min.css">
+<style>
+	tbody tr:hover {
+		background-color: beige;
+		cursor: pointer;
+	}
+</style>
+<script>
+	function fnDetail(n){
+		location.href="${contextPath}/board/detail.do?board_no=" + n;
+	}
+</script>
 </head>
 <body>
 
@@ -37,7 +48,7 @@
 				</c:if>
 				<c:if test="${not empty boardList }">
 					<c:forEach items="${boardList }" var="b">
-						<tr>
+						<tr onclick="fnDetail(${b.board_no})">
 							<td>${b.title }</td>
 							<td>${b.writer }</td>
 							<td>${b.created_at }</td>
