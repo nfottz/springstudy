@@ -21,17 +21,19 @@
 
 	$(function(){
 		$('#content').summernote({
-		  width: 640,
-		  height: 480,
-		  lang: 'ko-KR',
-		  toolbar: [
-			  ['style', ['bold', 'italic', 'underline', 'clear']],
-			  ['font', ['strikethrough', 'superscript', 'subscript']],
-			  ['para', ['ul', 'ol', 'paragraph']],
-			  ['table', ['table']],
-			  ['insert', ['link', 'picture', 'video']],
-			  ['view', ['fullscreen', 'codeview', 'help']],
-			]
+			  width: 640,
+			  height: 480,
+			  lang: 'ko-KR',
+			  toolbar: [
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					['font', ['strikethrough', 'superscript', 'subscript']],
+					['fontname', ['fontname']],
+					['color', ['color']],
+					['para', ['ul', 'ol', 'paragraph']],
+					['table', ['table']],
+					['insert', ['link', 'picture', 'video']],
+					['view', ['fullscreen', 'codeview', 'help']]
+				]
 		});
 	})
 	
