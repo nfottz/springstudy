@@ -17,7 +17,13 @@ public class BoardController {
 	
 	@GetMapping("/list.do")
 	public String list(Model model) {	// Model : jsp로 전달(forward)할 데이터(속성, attribute)를 저장한다.
+		model.addAttribute("boardList", boardService.getBoardList());
 		return "board/list";
+	}
+	
+	@GetMapping("/write.do")
+	public String write() {
+		return "board/write";
 	}
 	
 }
