@@ -6,8 +6,8 @@ import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
@@ -32,8 +32,9 @@ public class ParameterCheckAOP {
 	// 파라미터를 콘솔에 출력하기 위한 LOGGER
 	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterCheckAOP.class);
 	
-	@Around("setPointCut()")
-	public Object paramLogging(ProceedingJoinPoint joinPoint) throws Throwable {
+	/* After 애너테이션을 사용하는 경우 JoinPoint를 쓰면 되고, 따로 실행 작업이 필요하지 않다. */
+	@After("setPointCut()")
+	public void paramLogging(JoinPoint joinPoint) {
 		
 		// 모든 파라미터가 저장된 HttpServletRequest 가져오기
 		// (컨트롤러가 아닌 곳에서 request를 확인하기 때문에 이렇게,,)
@@ -45,6 +46,31 @@ public class ParameterCheckAOP {
 		Map<String, String[]> map = request.getParameterMap();
 		
 		// 콘솔에 출력할 형태 만들기 : [파라미터명=값]
+		String str = "";
+		if(map.isEmpty()) {
+			str += "[No Parameter]";
+		} else {
+			for(Entry<String, String[]> entry : map.entrySet()) {
+				str += "[" + entry.getKey() + "=" + Arrays.toString(entry.getValue()) + "]";
+			}
+		}
+		
+		// 어드바이스 실행(로그 찍기)
+		LOGGER.debug("{} {} {}", request.getMethod(), request.getRequestURI(), str);
+		
+	}
+	
+	/*
+		Around 애너테이션의 경우 ProceedingJoinPoint를 써줘야 하고, joinPoint.proceed() 작업이 필요하다.
+	
+	@Around("setPointCut()")
+	public Object paramLogging(ProceedingJoinPoint joinPoint) throws Throwable {
+
+		ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+		HttpServletRequest request = servletRequestAttributes.getRequest();
+
+		Map<String, String[]> map = request.getParameterMap();
+
 		String str = "";
 		if(map.isEmpty()) {
 			str += "[No Parameter]";
@@ -68,5 +94,5 @@ public class ParameterCheckAOP {
 		
 		return obj;
 	}
-	
+	*/
 }

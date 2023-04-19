@@ -43,4 +43,10 @@
 	</script>
 	</div>
 	
+	<hr>
+	
+	<div>
+		<a href="${contextPath }/board/detail1.do?boardNo=10">상세요청1</a>
+	</div>
+	
 </body>
