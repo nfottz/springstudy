@@ -1,11 +1,14 @@
 package com.gdu.myapp.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.gdu.myapp.domain.BoardDTO;
 import com.gdu.myapp.repository.BoardDAO;
@@ -19,8 +22,7 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public List<BoardDTO> list() {
-		// TODO Auto-generated method stub
-		return null;
+		return boardDAO.list();
 	}
 
 	@Override
@@ -30,8 +32,18 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public BoardDTO detail2(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<String> opt = Optional.ofNullable(request.getParameter("boardNo"));
+		int boardNo = Integer.parseInt(opt.orElse("0"));
+		return boardDAO.detail2(boardNo);
 	}
 
+	@Override
+	public void detail3(Model model) {
+		Map<String, Object> map = model.asMap();
+		HttpServletRequest request = (HttpServletRequest)map.get("request");
+		Optional<String> opt = Optional.ofNullable(request.getParameter("boardNo"));
+		int boardNo = Integer.parseInt(opt.orElse("0"));
+		model.addAttribute("board", boardDAO.detail3(boardNo));
+	}
+	
 }

@@ -1,9 +1,12 @@
 package com.gdu.myapp.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gdu.myapp.domain.BoardDTO;
 import com.gdu.myapp.service.BoardService;
@@ -51,6 +54,25 @@ public class BoardController2 {
 		BoardDTO board = boardService.detail1(boardNo);
 		model.addAttribute("board", board);
 		return "board/detail";
+	}
+	
+	@GetMapping("/board/detail2.do")
+	public String detail2(HttpServletRequest request, Model model) {
+		model.addAttribute("board", boardService.detail2(request));
+		return "board/detail";
+	}
+	
+	@GetMapping("/board/detail3.do")
+	public String detail3(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);
+		boardService.detail3(model);
+		return "board/detail";
+	}
+	
+	@GetMapping("/board/list.do")
+	public String list(Model model) {
+		model.addAttribute("brdList", boardService.list());
+		return "board/list";
 	}
 	
 }
