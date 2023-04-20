@@ -41,17 +41,16 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:if test="${empty boardList }">
+				<c:if test="${empty noticeList }">
 					<tr>
 						<td colspan="3">첫 게시글의 주인공이 되어보세요!</td>
 					</tr>
 				</c:if>
-				<c:if test="${not empty boardList }">
-					<c:forEach items="${boardList }" var="b">
-						<tr onclick="fnDetail(${b.board_no})">
-							<td>${b.title }</td>
-							<td>${b.writer }</td>
-							<td>${b.created_at }</td>
+				<c:if test="${not empty noticeList }">
+					<c:forEach items="${noticeList }" var="n">
+						<tr>
+							<td>${n.notice_no }</td>
+							<td>${n.title }</td>
 						</tr>
 					</c:forEach>
 				</c:if>
