@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gdu.app07.service.BoardServiceImpl;
@@ -70,6 +69,12 @@ public class BoardController {
 	public String modify(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute("modifyResult", boardService.modifyBoard(request));
 		return "redirect:/board/detail.do?boardNo=" + request.getParameter("boardNo");
+	}
+	
+	@PostMapping("/remove.do")
+	public String remove(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("removeResult", boardService.removeBoard(request));
+		return "redirect:/board/list.do";
 	}
 	
 }

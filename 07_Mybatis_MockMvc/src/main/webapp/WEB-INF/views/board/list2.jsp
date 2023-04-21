@@ -24,15 +24,12 @@
 		location.href="${contextPath}/board/detail.do?boardNo=" + n;
 	}
 	$(function(){
-		let addResult = '${addResult}';		/* '1' 성공 '0' 실패 '' 전달이없을때 */
-		if(addResult != '') {
-			if(addResult == '1') {
-				alert('게시글이 등록되었습니다!');
-			} else {
-				alert('게시글 등록에 실패하였습니다,,ㅠ');
-			}
+		let addResult = ${addResult};		/* '1' 성공 '0' 실패 '' 전달이없을때 */
+		if(addResult == 1) {
+			alert('게시글이 등록되었습니다!');
+		} else {
+			alert('게시글 등록에 실패하였습니다,,ㅠ');
 		}
-		
 		
 		let removeResult = '${removeResult}';
 		if(removeResult != '') {
