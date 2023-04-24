@@ -20,29 +20,28 @@
 	}
 </style>
 <script>
-	function fnDetail(n){
-		location.href="${contextPath}/board/detail.do?boardNo=" + n;
+	function fnDetail(n) {
+		location.href = '${contextPath}/board/detail.do?boardNo=' + n;
 	}
 	$(function(){
-		let addResult = '${addResult}';		/* '1' 성공 '0' 실패 '' 전달이없을때 */
-		if(addResult != '') {
-			if(addResult == '1') {
-				alert('게시글이 등록되었습니다!');
+		let addResult = '${addResult}';  // let addResult = '1';  삽입 성공
+		                                 // let addResult = '0';  삽입 실패
+		                                 // let addResult = '';   삽입과 상관 없음
+		if(addResult != ''){
+			if(addResult == '1'){
+				alert('게시글이 등록되었습니다.');
 			} else {
-				alert('게시글 등록에 실패하였습니다,,ㅠ');
+				alert('게시글 등록이 실패했습니다.');
 			}
 		}
-		
-		
 		let removeResult = '${removeResult}';
-		if(removeResult != '') {
-			if(removeResult == '1') {
-				alert('게시글이 삭제되었습니다!');
+		if(removeResult != ''){
+			if(removeResult == '1'){
+				alert('게시글이 삭제되었습니다.');
 			} else {
-				alert('게시글 삭제에 실패하였습니다,,ㅠ');
+				alert('게시글 삭제가 실패했습니다.');
 			}
 		}
-		
 	})
 </script>
 </head>

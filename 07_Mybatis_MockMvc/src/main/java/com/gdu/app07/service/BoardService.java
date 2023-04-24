@@ -13,5 +13,6 @@ public interface BoardService {
 	public int addBoard(HttpServletRequest request);
 	public int modifyBoard(HttpServletRequest request);
 	public int removeBoard(HttpServletRequest request);
+	public void testTx();
 	
 }

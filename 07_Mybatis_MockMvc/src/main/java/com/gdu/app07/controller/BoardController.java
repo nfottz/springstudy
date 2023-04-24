@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.gdu.app07.service.BoardService;
 import com.gdu.app07.service.BoardServiceImpl;
 
 @RequestMapping("/board")
@@ -17,7 +18,7 @@ import com.gdu.app07.service.BoardServiceImpl;
 public class BoardController {
 
 	@Autowired
-	private BoardServiceImpl boardService;
+	private BoardService boardService;
 	
 	/*
 		데이터(속성) 저장 방법
@@ -75,6 +76,12 @@ public class BoardController {
 	public String remove(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute("removeResult", boardService.removeBoard(request));
 		return "redirect:/board/list.do";
+	}
+	
+	// 트랜잭션 테스트
+	@GetMapping("/tx.do")
+	public void tx() {
+		boardService.testTx();
 	}
 	
 }
