@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -13,7 +14,9 @@
 </head>
 <body>
 
-	<a href="${contextPath}/board/list.do">게시판</a>
+	<div>
+		<a href="${contextPath}/employees/pagination.do">페이징</a>
+	</div>
 	
 </body>
 </html>

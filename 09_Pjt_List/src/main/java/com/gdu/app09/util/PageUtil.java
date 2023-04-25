@@ -36,7 +36,7 @@ public class PageUtil {
 		totalPage = totalRecord / recordPerPage;
 		if(totalRecord % recordPerPage != 0) totalPage++;
 //		totalPage = totalRecord % recordPerPage == 0? totalRecord / recordPerPage : totalRecord / recordPerPage + 1;
-//		totalPage = (totalRecord + pagePerBlock - 1) / recordPerPage;
+//		totalPage = (totalRecord + recordPerPage - 1) / recordPerPage;
 		
 		// beginPage, endPage 계산
 		beginPage = ((page - 1) / pagePerBlock) * pagePerBlock + 1;
