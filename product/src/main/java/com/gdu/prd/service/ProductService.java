@@ -9,5 +9,6 @@ public interface ProductService {
 	public void loadProductList(Model model);
 	public int addProduct(ProductDTO productDTO);
 //	public int addProduct(String prodName, int prodPrice);
+	public void loadProduct(int prodNo, Model model);
 	
 }

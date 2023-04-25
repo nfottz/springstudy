@@ -29,4 +29,10 @@
 		VALUES (PRODUCT_SEQ.NEXTVAL, #{param1}, #{param2}, SYSDATE)
 	</insert> -->
 
+	<select id="getProductByNo" parameterType="int" resultType="ProductDTO">
+		SELECT PROD_NO, PROD_NAME, PROD_PRICE, PROD_MADE_AT
+		  FROM PRODUCT
+		 WHERE PROD_NO = #{prodNo}
+	</select>
+	
 </mapper>

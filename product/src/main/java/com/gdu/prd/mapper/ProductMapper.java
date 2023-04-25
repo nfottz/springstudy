@@ -13,5 +13,6 @@ public interface ProductMapper {
 	public int getProductCount();
 	public int addProduct(ProductDTO productDTO);
 //	public int addProduct(String prodName, int prodPrice);
+	public ProductDTO getProductByNo(int prodNo);
 	
 }

@@ -42,34 +42,21 @@
 <body>
 
 	<div>
-		${productCount }개 제품이 있습니다!
-		<h3>제품 등록화면</h3>
-		<form method="post" action="${contextPath }/product/add.do">
+		<h3>제품 편집화면</h3>
+		<form method="post" action="${contextPath }/product/modify.do">
 			<div>
 				<label for="prodName">제품이름</label>
-				<input id="prodName" name="prodName" required="required">
+				<input id="prodName" name="prodName" required="required" value="${productDTO.prodName }">
 			</div>
 			<div>
 				<label for="prodPrice">제품가격</label>
-				<input id="prodPrice" name="prodPrice">
+				<input id="prodPrice" name="prodPrice" value="${productDTO.prodPrice }">
 			</div>
 			<div>
-				<button>제품등록하기</button>
-				<input type="reset" value="다시 작성하기">
+				<button>제품정보수정하기</button>
+				<input type="reset" value="초기화">
 			</div>
 		</form>
-	</div>
-	
-	<hr>
-	
-	<div>
-		<c:forEach items="${productList }" var="product">
-			<ul class="product">
-				<li>제품번호 <span>${product.prodNo }</span></li>
-				<li>제품이름 ${product.prodName }</li>
-			</ul>
-			<hr>
-		</c:forEach>
 	</div>
 	
 </body>
