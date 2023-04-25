@@ -45,15 +45,17 @@ public class PageUtil {
 		
 	}
 	
-	public String getPagination() {
+	public String getPagination(String path) {
 		
 		StringBuilder sb = new StringBuilder();
+		
+		sb.append("<div class=\"pagination\">");
 		
 		// 이전 블록 : 1블록은 이전 블록이 없고, 나머지 블록은 이전 블록이 있다.
 		if(beginPage == 1) {
 			sb.append("<span class=\"hidden\">◀</span>");
 		} else {
-			sb.append("<a class=\"link\" href=\"/app09/employees/pagination.do?page="+ (beginPage - 1) +"\">◀</a>");
+			sb.append("<a class=\"link\" href=\""+ path +"?page="+ (beginPage - 1) +"\">◀</a>");
 		}
 		
 		// 페이지번호 : 현재 페이지는 링크가 없다.
@@ -61,7 +63,7 @@ public class PageUtil {
 			if(p == page) {
 				sb.append("<span class=\"strong\">" + p + "</span>");
 			} else {
-				sb.append("<a class=\"link\" href=\"/app09/employees/pagination.do?page=" + p + "\">" + p + "</a>");
+				sb.append("<a class=\"link\" href=\""+ path +"?page=" + p + "\">" + p + "</a>");
 			}
 		}
 		
@@ -69,9 +71,11 @@ public class PageUtil {
 		if(endPage == totalPage) {
 			sb.append("<span class=\"hidden\">▶</span>");
 		} else {
-			sb.append("<a class=\"link\" href=\"/app09/employees/pagination.do?page=" + (endPage + 1) + "\">▶</a>");
+			sb.append("<a class=\"link\" href=\""+ path +"?page=" + (endPage + 1) + "\">▶</a>");
 			
 		}
+		
+		sb.append("</div>");
 		
 		return sb.toString();
 	}

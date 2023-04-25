@@ -23,10 +23,29 @@
 		
 	})
 </script>
+<style>
+	.pagination {
+		width: 355px;
+		margin: 0 auto;
+	}
+	.pagination span, .pagination a {
+		display: inline-block;
+		width: 50px;
+	}
+	.hidden {
+		visibility: hidden;
+	}
+	.strong {
+		font-weight: 900;
+	}
+	.link {
+		
+	}
+</style>
 </head>
 <body>
 
-	<div>	
+	<div>
 		<a href="${contextPath}/employees/serach.form">사원 조회 화면으로 이동</a>
 	</div>
 	<div>
@@ -77,7 +96,7 @@
 			<tfoot>
 				<tr>
 					<td colspan="12">
-						<div>${pagination }</div>
+						${pagination }
 					</td>
 				</tr>
 			</tfoot>
