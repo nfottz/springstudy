@@ -30,13 +30,23 @@
 	})
 </script>
 <style>
+	.title {
+		cursor: pointer;
+	}
+	.title:hover {
+		color: gray;
+	}
+	.title:active {
+		color: silver;
+	}
 	.pagination {
-		width: 355px;
+		width: 350px;
 		margin: 0 auto;
+		text-align: center;
 	}
 	.pagination span, .pagination a {
 		display: inline-block;
-		width: 50px;
+		margin: 0 15px;
 	}
 	.hidden {
 		visibility: hidden;
@@ -46,9 +56,6 @@
 	}
 	.link {
 		color: orange;
-	}
-	.title {
-	
 	}
 	table {
 		width: 1200px;
@@ -86,8 +93,8 @@
 					<td><span class="title" data-column="SALARY" data-order="${order }">연봉</span></td>
 					<td><span class="title" data-column="COMMISSION_PCT" data-order="${order }">커미션</span></td>
 					<td><span class="title" data-column="MANAGER_ID" data-order="${order }">매니저</span></td>
-					<td>부서명</td>
-					<td>부서번호</td>
+					<td><span class="title" data-column="DEPARTMENT_ID" data-order="${order}">부서번호</span></td>
+					<td><span class="title" data-column="DEPARTMENT_NAME" data-order="${order}">부서명</span></td>
 				</tr>
 			</thead>
 			<tbody>

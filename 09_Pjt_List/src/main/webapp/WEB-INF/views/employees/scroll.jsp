@@ -14,7 +14,19 @@
 <body>
 
 	<div>
-		<a href="${contextPath}/employees/pagination.do">페이징</a>
+		<a href="${contextPath}/employees/serach.form">사원 조회 화면으로 이동</a>
+	</div>
+	
+	<h1>사원목록</h1>
+	
+	<!-- 사원 목록 보여주는 곳 -->
+	<div id="employees">
+	
+	</div>
+	
+	<!-- loading.gif 보여주는 곳 -->
+	<div id="loading">
+	
 	</div>
 	
 </body>
