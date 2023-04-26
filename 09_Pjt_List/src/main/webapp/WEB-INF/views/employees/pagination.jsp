@@ -21,6 +21,12 @@
 		let recordPerPage = '${sessionScope.recordPerPage}' == '' ? '10' : '${sessionScope.recordPerPage}';
 		$('#recordPerPage').val(recordPerPage);
 		
+		// 제목을 클릭하면 정렬 방식을 바꿈(ASC, DESC)
+		$('.title').on('click', function(){
+			location.href = '${contextPath}/employees/pagination.do?column=' + $(this).data('column') + '&order=' + $(this).data('order') + "&page=${page}";
+		})
+		// 언니 안녕....♡ 내가 누구냐면 힌트를 줄게 난 용띠야
+		// 안녕 성민아......
 	})
 </script>
 <style>
@@ -39,8 +45,17 @@
 		font-weight: 900;
 	}
 	.link {
-		
+		color: orange;
 	}
+	.title {
+	
+	}
+	table {
+		width: 1200px;
+	}
+	table td:nth-of-type(1){ width: 70px; }
+	table td:nth-of-type(2){ width: 100px; }
+	table td:nth-of-type(3){ width: 150px; }
 </style>
 </head>
 <body>
@@ -62,23 +77,23 @@
 			<thead>
 				<tr>
 					<td>순번</td>
-					<td>사원번호</td>
-					<td>사원명</td>
-					<td>이메일</td>
-					<td>전화번호</td>
-					<td>입사일자</td>
-					<td>직무</td>
-					<td>연봉</td>
-					<td>커미션</td>
-					<td>매니저</td>
-					<td>부서번호</td>
+					<td><span class="title" data-column="EMPLOYEE_ID" data-order="${order }">사원번호</span></td>
+					<td><span class="title" data-column="FIRST_NAME" data-order="${order }">사원명</span></td>
+					<td><span class="title" data-column="EMAIL" data-order="${order }">이메일</span></td>
+					<td><span class="title" data-column="PHONE_NUMBER" data-order="${order }">전화번호</span></td>
+					<td><span class="title" data-column="HIRE_DATE" data-order="${order }">입사일자</span></td>
+					<td><span class="title" data-column="JOB_ID" data-order="${order }">직무</span></td>
+					<td><span class="title" data-column="SALARY" data-order="${order }">연봉</span></td>
+					<td><span class="title" data-column="COMMISSION_PCT" data-order="${order }">커미션</span></td>
+					<td><span class="title" data-column="MANAGER_ID" data-order="${order }">매니저</span></td>
 					<td>부서명</td>
+					<td>부서번호</td>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${employees }" var="emp" varStatus="vs">
 					<tr>
-						<td>${vs.index }</td>
+						<td>${beginNo - vs.index }</td>
 						<td>${emp.employeeId }</td>
 						<td>${emp.firstName } ${emp.lastName }</td>
 						<td>${emp.email }</td>
