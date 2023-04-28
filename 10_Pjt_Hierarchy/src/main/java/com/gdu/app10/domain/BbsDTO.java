@@ -18,7 +18,7 @@ public class BbsDTO {
 	private Date createdAt;
 	private int state;
 	private int depth;
-	private int gourpNo;
+	private int groupNo;
 	private int groupOrder;
 	
 }

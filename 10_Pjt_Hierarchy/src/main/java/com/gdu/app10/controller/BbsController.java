@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.config.annotation.RedirectViewControllerRegistration;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gdu.app10.service.BbsService;
@@ -40,6 +41,12 @@ public class BbsController {
 	public String remove(int bbsNo, RedirectAttributes redirectAttributes) {	// @RequestParam 생략
 		int removeResult = bbsService.removeBbs(bbsNo);
 		redirectAttributes.addFlashAttribute("removeResult", removeResult);
+		return "redirect:/bbs/list.do";
+	}
+	
+	@PostMapping("/reply/add.do")
+	public String addReply(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("addReplyResult", bbsService.addReply(request));
 		return "redirect:/bbs/list.do";
 	}
 	

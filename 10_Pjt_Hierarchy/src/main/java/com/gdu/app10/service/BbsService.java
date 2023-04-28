@@ -11,5 +11,6 @@ public interface BbsService {
 	public void loadBbsList(HttpServletRequest request, Model model);
 	public int addBbs(HttpServletRequest request);
 	public int removeBbs(int bbsNo);
+	public int addReply(HttpServletRequest request);
 
 }
