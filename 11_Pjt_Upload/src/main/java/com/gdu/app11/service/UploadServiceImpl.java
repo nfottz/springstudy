@@ -2,11 +2,20 @@ package com.gdu.app11.service;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -14,6 +23,7 @@ import com.gdu.app11.domain.AttachDTO;
 import com.gdu.app11.domain.UploadDTO;
 import com.gdu.app11.mapper.UploadMapper;
 import com.gdu.app11.util.MyFileUtil;
+import com.gdu.app11.util.PageUtil;
 
 import lombok.AllArgsConstructor;
 import net.coobird.thumbnailator.Thumbnails;
@@ -25,12 +35,38 @@ public class UploadServiceImpl implements UploadService {
 	// field
 	private UploadMapper uploadMapper;
 	private MyFileUtil myFileUtil;
-
+	private PageUtil pageUtil;
+	
 	// 권장사항 : Pagination 처리 해보기
 	@Override
 	public void getUploadList(Model model) {
 		List<UploadDTO> uploadList = uploadMapper.getUploadList();
 		model.addAttribute("uploadList", uploadList);
+	}
+	
+	@Override
+	public void getUploadListUsingPagination(HttpServletRequest request, Model model) {
+		
+		Optional<String> opt1 = Optional.ofNullable(request.getParameter("page"));
+		int page = Integer.parseInt(opt1.orElse("1"));
+		int totalRecord = uploadMapper.getUploadCount();
+		HttpSession session = request.getSession();
+		Optional<Object> opt2 = Optional.ofNullable(session.getAttribute("recordPerPage"));
+		int recordPerPage = (int)(opt2.orElse(10));
+		pageUtil.setPageUtil(page, totalRecord, recordPerPage);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("begin", pageUtil.getBegin());
+		map.put("end", pageUtil.getEnd());
+
+		System.out.println(pageUtil.getBegin() + " " + pageUtil.getEnd());
+		List<UploadDTO> uploadList = uploadMapper.getUploadListUsingPagination(map);
+		model.addAttribute("uploadList", uploadList);
+		model.addAttribute("pagination", pageUtil.getPagination(request.getContextPath() + "/upload/list.do"));
+//		model.addAttribute("beginNo", totalRecord - (page - 1) * recordPerPage);
+//		model.addAttribute("page", page);
+		
+		
 	}
 	
 	@Transactional(readOnly = true)	// INSERT문을 2개 이상 수행하기 때문에 트랜잭션 처리가 필요하다.
@@ -48,13 +84,9 @@ public class UploadServiceImpl implements UploadService {
 		uploadDTO.setUploadTitle(uploadTitle);
 		uploadDTO.setUploadContent(uploadContent);
 		
-		System.out.println("전 " + uploadDTO.getUploadNo());
-		
 		// DB로 UploadDTO 보내기
 		int uploadResult = uploadMapper.addUpload(uploadDTO);
 		// <selectKey>에 의해 uploadDTO 객체의 uploadNo 필드에 UPLOAD_SEQ.NEXTVAL 값이 저장된다.
-		
-		System.out.println("후 " + uploadDTO.getUploadNo());
 		
 		/* Attach 테이블에 AttachDTO 넣기 */
 		
@@ -135,4 +167,27 @@ public class UploadServiceImpl implements UploadService {
 		return uploadResult;
 	}
 
+	@Override
+	public void getUploadByNo(int uploadNo, Model model) {
+		model.addAttribute("upload", uploadMapper.getUploadByNo(uploadNo));
+		model.addAttribute("attachList", uploadMapper.getAttachList(uploadNo));
+	}
+	
+	@Override
+	public ResponseEntity<byte[]> display(int attachNo) {
+		
+		AttachDTO attachDTO = uploadMapper.getAttachByNo(attachNo);
+		
+		ResponseEntity<byte[]> image = null;
+		
+		try {			
+			File thumbnail = new File(attachDTO.getPath(), "s_" + attachDTO.getFilesystemName());
+			image = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(thumbnail), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return image;
+	}
+	
 }
