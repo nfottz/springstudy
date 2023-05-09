@@ -16,5 +16,7 @@ public class UploadDTO {
 	private String uploadContent;
 	private Timestamp createdAt;
 	private Timestamp modifiedAt;
+	// UPLOAD 테이블에는 없는 칼럼이지만 목록보기에서 정보를 저장하기 위해 사용
+	private int attachCount;
 	
 }

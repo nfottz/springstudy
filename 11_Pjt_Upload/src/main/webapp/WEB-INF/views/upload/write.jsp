@@ -51,7 +51,7 @@
 				<input type="text" id="uploadTitle" name="uploadTitle">
 			</div>
 			<div>
-				<label for="uploadContent">제목</label><br>
+				<label for="uploadContent">내용</label><br>
 				<textarea id="uploadContent" name="uploadContent" rows="5" cols="30"></textarea>
 			</div>
 			<div>
