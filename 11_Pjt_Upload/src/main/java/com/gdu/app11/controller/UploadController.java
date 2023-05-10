@@ -4,11 +4,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -64,6 +66,13 @@ public class UploadController {
 	@GetMapping("/display.do")
 	public ResponseEntity<byte[]> display(@RequestParam("attachNo") int attachNo){
 		return uploadService.display(attachNo);
+	}
+	
+	@GetMapping("/download.do")
+	// method에서 args는 적을수록 좋다!
+	// args를 HttpServletRequest request로 받으면 서비스에서 하나로 받아서 .getParameter, .getHeader를 사용할 수도 있다!
+	public ResponseEntity<Resource> download(@RequestParam("attachNo") int attachNo, @RequestHeader("User-Agent") String userAgent){
+		return uploadService.download(attachNo, userAgent);
 	}
 	
 }
