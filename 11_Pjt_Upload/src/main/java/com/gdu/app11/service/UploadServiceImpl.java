@@ -1,26 +1,32 @@
 package com.gdu.app11.service;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -64,7 +70,6 @@ public class UploadServiceImpl implements UploadService {
 		map.put("begin", pageUtil.getBegin());
 		map.put("end", pageUtil.getEnd());
 
-		System.out.println(pageUtil.getBegin() + " " + pageUtil.getEnd());
 		List<UploadDTO> uploadList = uploadMapper.getUploadListUsingPagination(map);
 		model.addAttribute("uploadList", uploadList);
 		model.addAttribute("pagination", pageUtil.getPagination(request.getContextPath() + "/upload/list.do"));
@@ -90,7 +95,7 @@ public class UploadServiceImpl implements UploadService {
 		uploadDTO.setUploadContent(uploadContent);
 		
 		// DB로 UploadDTO 보내기
-		int uploadResult = uploadMapper.addUpload(uploadDTO);
+		int addResult = uploadMapper.addUpload(uploadDTO);
 		// <selectKey>에 의해 uploadDTO 객체의 uploadNo 필드에 UPLOAD_SEQ.NEXTVAL 값이 저장된다.
 		
 		/* Attach 테이블에 AttachDTO 넣기 */
@@ -98,11 +103,11 @@ public class UploadServiceImpl implements UploadService {
 		// 첨부된 파일 목록
 		List<MultipartFile> files = multipartRequest.getFiles("files");	// <input type="file" name="files">
 		
-		// 첨부된 파일이 있는지 체크
-		if(files != null && files.isEmpty() == false) {
-			
-			// 첨부된 파일 목록 순회
-			for(MultipartFile multipartFile : files) {
+		// 첨부된 파일 목록 순회
+		for(MultipartFile multipartFile : files) {
+		
+			// 첨부된 파일이 있는지 체크
+			if(multipartFile != null && multipartFile.isEmpty() == false) {
 				
 				// 예외처리
 				try {
@@ -169,7 +174,7 @@ public class UploadServiceImpl implements UploadService {
 		
 		}
 		
-		return uploadResult;
+		return addResult;
 	}
 
 	@Override
@@ -234,13 +239,204 @@ public class UploadServiceImpl implements UploadService {
 			e.printStackTrace();
 		}
 		
-		// 다운로드 응답 헤더 만들기
+		/*
+		// 다운로드 응답 헤더 만들기 (Jsp/Servlet 코드)
 		MultiValueMap<String, String> responseHeader = new HttpHeaders();
+		responseHeader.add("Content-Type", "application/octet-stream");
 		responseHeader.add("Content-Disposition", "attachment; filename=" + originName);
 		responseHeader.add("Content-Length", file.length()+"");
+		*/
+		
+		// 다운로드 응답 헤더 만들기 (Spring 코드)
+		HttpHeaders responseHeader = new HttpHeaders();
+		responseHeader.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+		responseHeader.setContentDisposition(ContentDisposition.attachment().filename(originName).build());
+		responseHeader.setContentLength(file.length());
 		
 		// 응답
 		return new ResponseEntity<Resource>(resource, responseHeader, HttpStatus.OK);
+	}
+	
+	@Override
+	public ResponseEntity<Resource> downloadAll(int uploadNo) {
+
+		/* 모든 첨부 파일을 zip 파일로 압축해서 다운로드 하는 서비스 */
+		// com.gdu.app011.batch.RemoveTempfileScheduler에 의해서 주기적으로 zip 파일들은 삭제된다.
+
+		// zip 파일이 저장될 경로
+		String tempPath = myFileUtil.getTempPath();
+		File dir = new File(tempPath);
+		if(dir.exists() == false) dir.mkdirs();
+		
+		// zip 파일의 이름
+		String tempfileName = myFileUtil.getTempfileName();
+		
+		// zip 파일 객체 생성
+		File zfile = new File(tempPath, tempfileName);
+		
+		// zip 파일을 생성하기 위한 Java IO Stream 선언
+		BufferedInputStream bin = null;		// 각 첨부 파일을 읽어 들이는 스트림
+		ZipOutputStream zout = null;		// zip 파일을 만드는 스트림
+		
+		// 다운로드 할 첨부 파일들의 정보(경로, 원래 이름, 저장된 이름) 가져오기
+		List<AttachDTO> attachList = uploadMapper.getAttachList(uploadNo);
+		
+		try {
+			
+			// ZipOutputStream 객체 생성
+			zout = new ZipOutputStream(new FileOutputStream(zfile));
+			
+			// 첨부 파일들을 하나씩 순회하면서 읽어 들인 뒤 zip 파일에 추가하기 + 각 첨부 파일의 다운로드 횟수 증가 시키기
+			for(AttachDTO attachDTO : attachList) {
+				
+				// zip 파일에 추가할 첨부 파일 이름 등록(첨부 파일의 원래 이름)
+				ZipEntry zipEntry = new ZipEntry(attachDTO.getOriginName());
+				zout.putNextEntry(zipEntry);
+				
+				// zip 파일에 첨부 파일 추가
+				bin = new BufferedInputStream(new FileInputStream(new File(attachDTO.getPath(), attachDTO.getFilesystemName())));
+				
+				// bin -> zout으로 파일 복사하기 (java 코드)
+				byte[] b = new byte[1024];	// 첨부 파일을 1KB 단위로 읽어온다.
+				int readByte = 0;			// 실제로 읽어 들인 바이트 수
+				while((readByte = bin.read(b)) != -1) {
+					zout.write(b, 0, readByte);
+				}
+				bin.close();
+				zout.closeEntry();
+				
+				// 각 첨부 파일들의 다운로드 횟수 증가
+				uploadMapper.increaseDownloadCount(attachDTO.getAttachNo());
+			}
+			
+			zout.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		// 다운로드 할 zip 파일의 File 객체 -> Resource 객체
+		Resource resource = new FileSystemResource(zfile);
+		
+		// 다운로드 응답 헤더 만들기
+		HttpHeaders responseHeader = new HttpHeaders();
+		responseHeader.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+		responseHeader.setContentDisposition(ContentDisposition.attachment().filename(tempfileName).build());
+		responseHeader.setContentLength(zfile.length());
+		
+		// 응답
+		return new ResponseEntity<Resource>(resource, responseHeader, HttpStatus.OK);
+	}
+	
+	@Override
+	public int removeUpload(int uploadNo) {
+		
+		// 삭제할 첨부 파일들의 정보
+		List<AttachDTO> attachList = uploadMapper.getAttachList(uploadNo);
+		
+		// 첨부 파일이 있으면 삭제
+		if(attachList != null && attachList.isEmpty() == false) {
+
+			// 삭제할 첨부 파일들을 순회하면서 하나씩 삭제
+			for(AttachDTO attachDTO : attachList) {
+				
+				// 삭제할 첨부 파일의 File 객체
+				File file = new File(attachDTO.getPath(), attachDTO.getFilesystemName());
+				
+				// 첨부 파일 삭제
+				if(file.exists()) file.delete();
+				
+				// 첨부 파일이 이미지라면 "s_"로 시작하는 썸네일도 함께 삭제한다.
+				if(attachDTO.getHasThumbnail() == 1) {
+					
+					// 삭제할 썸네일의 File 객체
+					File thumbnail = new File(attachDTO.getPath(), "s_" + attachDTO.getFilesystemName());
+					if(thumbnail.exists()) thumbnail.delete();
+				}
+			}
+		}
+		
+		// DB에서 uploadNo값을 가지는 데이터를 삭제
+		// 외래키 제약조건(ON DELETE CASCADE)에 의해서 UPLOAD 테이블의 데이터가 삭제되면
+		// ATTACH 테이블의 데이터도 함께 삭제된다.
+		int removeResult = uploadMapper.removeUpload(uploadNo);
+		
+		return removeResult;
+	}
+	
+	@Override
+	public int modifyUpload(MultipartHttpServletRequest multipartRequest) {
+		
+		int uploadNo = Integer.parseInt(multipartRequest.getParameter("uploadNo"));
+		String uploadTitle = multipartRequest.getParameter("uploadTitle");
+		String uploadContent = multipartRequest.getParameter("uploadContent");
+		
+		UploadDTO uploadDTO = new UploadDTO();
+		uploadDTO.setUploadNo(uploadNo);
+		uploadDTO.setUploadTitle(uploadTitle);
+		uploadDTO.setUploadContent(uploadContent);
+		
+		int modifyResult = uploadMapper.modifyUpload(uploadDTO);
+		
+		List<MultipartFile> files = multipartRequest.getFiles("files");
+		
+		for(MultipartFile multipartFile : files) {
+			
+			if(multipartFile != null && multipartFile.isEmpty() == false) {
+				
+				try {
+					
+					String path = myFileUtil.getPath();
+					File dir = new File(path);
+					if(dir.exists() == false) dir.mkdirs();
+					
+					String originName = multipartFile.getOriginalFilename();
+					originName = originName.substring(originName.lastIndexOf("\\") + 1);
+					
+					String filesystemName = myFileUtil.getFilesystemName(originName);
+					
+					File file = new File(dir, filesystemName);
+					
+					multipartFile.transferTo(file);
+					
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			}
+			
+		}
+		
+		return modifyResult;
+	}
+	
+	@Override
+	public int removeAttach(int attachNo) {
+
+		AttachDTO attachDTO = uploadMapper.getAttachByNo(attachNo);
+		
+		if(attachDTO != null) {
+			
+			File file = new File(attachDTO.getPath(), attachDTO.getFilesystemName());
+			
+			if(file.exists()) {
+				file.delete();
+			}
+			
+			if(attachDTO.getHasThumbnail() == 1) {
+				
+				File thumbnail = new File(attachDTO.getPath(), "s_" + attachDTO.getFilesystemName());
+				
+				if(thumbnail.exists()) {
+					thumbnail.delete();
+				}	
+			}
+						
+		}
+		int removeResult = uploadMapper.removeAttach(attachNo);
+		
+		return removeResult;
 	}
 	
 }

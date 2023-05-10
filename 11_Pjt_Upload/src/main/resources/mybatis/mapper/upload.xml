@@ -71,5 +71,32 @@
 		   SET DOWNLOAD_COUNT = DOWNLOAD_COUNT + 1
 		 WHERE ATTACH_NO = #{attachNo}
 	</update>
+	
+	<delete id="removeUpload" parameterType="int">
+		DELETE
+		  FROM UPLOAD
+		 WHERE UPLOAD_NO = #{uploadNo}
+	</delete>
+	
+	<update id="modifyUpload" parameterType="uploadDTO">
+		UPDATE UPLOAD
+		   SET UPLOAD_TITLE = #{uploadTitle}
+		     , UPLOAD_CONTENT = #{uploadContent}
+		     , MODIFIED_AT = SYSTIMESTAMP
+		 WHERE UPLOAD_NO = #{uploadNo}
+	</update>
+	
+	<select id="getAttachListInYesterday" resultType="AttachDTO">
+		SELECT ATTACH_NO, PATH, ORIGIN_NAME, FILESYSTEM_NAME, DOWNLOAD_COUNT, HAS_THUMBNAIL, UPLOAD_NO
+		  FROM ATTACH
+		 WHERE PATH LIKE CONCAT('%', TO_CHAR(SYSDATE - 1, 'YYYY\\MM\\DD'))
+	</select>
+	
+	<delete id="removeAttach" parameterType="int">
+		DELETE
+		  FROM ATTACH
+		 WHERE ATTACH_NO = #{attachNo}
+	</delete>
+	
 
 </mapper>

@@ -52,8 +52,8 @@ public class UploadController {
 	
 	@PostMapping("/add.do")
 	public String add(MultipartHttpServletRequest multipartRequest, RedirectAttributes redirectAttributes) {
-		int uploadResult = uploadService.addUpload(multipartRequest);
-		redirectAttributes.addFlashAttribute("uploadResult", uploadResult);
+		int addResult = uploadService.addUpload(multipartRequest);
+		redirectAttributes.addFlashAttribute("addResult", addResult);
 		return "redirect:/upload/list.do";
 	}
 	
@@ -73,6 +73,36 @@ public class UploadController {
 	// args를 HttpServletRequest request로 받으면 서비스에서 하나로 받아서 .getParameter, .getHeader를 사용할 수도 있다!
 	public ResponseEntity<Resource> download(@RequestParam("attachNo") int attachNo, @RequestHeader("User-Agent") String userAgent){
 		return uploadService.download(attachNo, userAgent);
+	}
+	
+	@GetMapping("/downloadAll.do")
+	public ResponseEntity<Resource> downloadAll(@RequestParam("uploadNo") int uploadNo){
+		return uploadService.downloadAll(uploadNo);
+	}
+	
+	@PostMapping("/removeUpload.do")
+	public String removeUpload(@RequestParam("uploadNo") int uploadNo, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("removeResult", uploadService.removeUpload(uploadNo));
+		return "redirect:/upload/list.do";
+	}
+	
+	@PostMapping("/editUpload.do")
+	public String edit(@RequestParam("uploadNo") int uploadNo, Model model) {
+		uploadService.getUploadByNo(uploadNo, model);
+		return "upload/edit";
+	}
+	
+	@PostMapping("/modify.do")
+	public String modify(MultipartHttpServletRequest multipartRequest, RedirectAttributes redirectAttributes) {
+		int modifyResult = uploadService.modifyUpload(multipartRequest);
+		redirectAttributes.addFlashAttribute("modifyResult", modifyResult);
+		return "redirect:/upload/detail.do?uploadNo=" + multipartRequest.getParameter("uploadNo");
+	}
+	
+	@GetMapping("/removeAttach.do")
+	public String removeAttach(@RequestParam("uploadNo") int uploadNo, @RequestParam("attachNo") int attachNo) {
+		uploadService.removeAttach(attachNo);
+		return "redirect:/upload/detail.do?uploadNo=" + uploadNo;
 	}
 	
 }
