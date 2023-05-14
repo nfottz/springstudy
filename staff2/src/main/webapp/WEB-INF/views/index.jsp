@@ -21,8 +21,8 @@
 			type: 'get',
 			url: '${contextPath}/list.json',
 			dataType: 'json',
-			success: function(resData){
-				$('#staffList').empty();
+			success: function(resData){	// resData = [ {}, {}, {} ]
+				$('#staffList').empty(); // 반복문 돌리기 전에 먼저 테이블의 내용을 비워줘야 한다. (이 작업을 수행하지 않으면 테이블에 데이터가 계속 누적됨.)
 				$.each(resData, function(i, staff){
 					let str = '<tr>';
 					str += '<td>' + staff.sno;
@@ -39,37 +39,19 @@
 		$.ajax({
 			type: 'post',
 			url: '${contextPath}/add.do',
-			data: $('#frm_add').serialize(),
+			data: $('#frm_add').serialize(), // <form>태그 안에 있는 name속성이 전부 파라미터로 넘어간다.
 			dataType: 'text',
-			success: function(resData){
+			success: function(resData){	// resData : 사원 등록이 성공했습니다.
 				alert(resData);
-				fnList();
-				$('#sno').val();
+				fnList();	// 사원목록 갱신
+				$('#sno').val();	// 등록시 입력한 정보 지워주기.
 				$('#name').val();
 				$('#salary').val();
 				
 			},
-			error: function(jqXHR){
+			error: function(jqXHR){  // jqXHR.responseText : 사원 등록이 실패했습니다.
 				alert(jqXHR.responseText);
 			}
-		})
-	}
-	
-	function fnSearch(){
-		$.ajax({
-			type: 'get',
-			url: '${contextPath}/query.json?',
-			data: $('#frm_search').serialize(),
-			dataType: 'json',
-			success: function(resData){
-				$('#staffList').empty();
-				let str = '<tr>';
-				str += '<td>' + resData.sno;
-				str += '<td>' + resData.name;
-				str += '<td>' + resData.dept;
-				str += '<td>' + resData.salary;
-				$('#staffList').append(str);
-			}		
 		})
 	}
 

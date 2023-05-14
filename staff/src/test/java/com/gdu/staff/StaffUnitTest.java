@@ -26,8 +26,11 @@ public class StaffUnitTest {
 	@Test
 	public void 삽입테스트() {
 		
-		StaffDTO staffDTO = new StaffDTO("99999", "김기획", "기획부", 5000);
-		assertEquals(200, staffService.addStaff(staffDTO).getStatusCode());
+		StaffDTO staffDTO = new StaffDTO();
+		staffDTO.setSno("99999");
+		staffDTO.setName("김기획");
+		staffDTO.setDept("기획부");
+		assertEquals(1, staffService.addStaff(staffDTO));
 		
 	}
 	
