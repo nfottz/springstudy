@@ -14,7 +14,8 @@
 <body>
 
 	<div>
-		<a href="${contextPath }/upload/list.do">UPLOAD</a>
+		<a href="${contextPath }/user/agree.form">회원가입</a>
+		<a href="${contextPath }/user/login.form">로그인</a>
 	</div>
 	
 </body>
