@@ -14,7 +14,7 @@ CREATE TABLE USER (
     POSTCODE        VARCHAR2(5 BYTE),                  -- 우편번호
     ROAD_ADDRESS    VARCHAR2(100 BYTE),                -- 도로명주소
     JIBUN_ADDRESS   VARCHAR2(100 BYTE),                -- 지번주소
-    DEETAIL_ADDRESS VARCHAR2(100 BYTE),                -- 상세주소
+    DETAIL_ADDRESS VARCHAR2(100 BYTE),                 -- 상세주소
     EXTRA_ADDRESS   VARCHAR2(100 BYTE),                -- 참고항목
     AGREECODE       NUMBER NOT NULL,                   -- 선택동의여부(0:미동의, 1:위치, 2:이벤트, 3:위치+이벤트)
     JOINED_AT       DATE,                              -- 가입일
