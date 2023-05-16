@@ -1,13 +1,13 @@
-DROP TABLE USER_ACCESS;
-DROP TABLE USER;
+DROP TABLE USER_ACCESS_T;
+DROP TABLE USER_T;
 
-CREATE TABLE USER (
+CREATE TABLE USER_T (
     USER_NO NUMBER NOT NULL,
     ID              VARCHAR2(40 BYTE) NOT NULL UNIQUE, -- id 정규식에 반영
     PW              VARCHAR2(64 BYTE) NOT NULL,        -- SHA256 암호화 방식 사용
     NAME            VARCHAR2(40 BYTE),                 -- 이름
     GENDER          VARCHAR2(2 BYTE),                  -- M, F, NO
-    EMAIL           VARCHAR2(100 BYTE) NOT NULL,       -- 이메일
+    EMAIL           VARCHAR2(100 BYTE) NOT NULL UNIQUE,-- 이메일
     MOBILE          VARCHAR2(15 BYTE),                 -- 하이픈(-) 제외 후 저장
     BIRTHYEAR       VARCHAR2(4 BYTE),                  -- 출생연도(YYYY)
     BIRTHDATE       VARCHAR2(4 BYTE),                  -- 출생월일(MMDD)
@@ -24,34 +24,35 @@ CREATE TABLE USER (
 );
 
 -- 회원 접속 기록(회원마다 마지막 로그인 날짜 1개만 기록)
-CREATE TABLE USER_ACCESS (
+CREATE TABLE USER_ACCESS_T (
     ID            VARCHAR2(40 BYTE) NOT NULL UNIQUE,   -- 로그인한 사용자 ID
     LAST_LOGIN_AT DATE                                 -- 마지막 접속일
 );
 
-ALTER TABLE USER
+ALTER TABLE USER_T
     ADD CONSTRAINT PK_USER
         PRIMARY KEY(USER_NO);
 
-ALTER TABLE USER_ACCESS
+ALTER TABLE USER_ACCESS_T
     ADD CONSTRAINT FK_USER_ACCESS
-        FOREIGN KEY(ID) REFERENCES USER(ID)
+        FOREIGN KEY(ID) REFERENCES USER_T(ID)
             ON DELETE CASCADE;
 
 DROP SEQUENCE USER_SEQ;
 CREATE SEQUENCE USER_SEQ NOCACHE;
 
 -- 탈퇴 (탈퇴한 아이디로 재가입이 불가능)
-DROP TABLE LEAVE_USER;
-CREATE TABLE LEAVE_USER (
+DROP TABLE LEAVE_USER_T;
+CREATE TABLE LEAVE_USER_T (
     ID        VARCHAR2(40 BYTE) NOT NULL UNIQUE,
+    EMAIL     VARCHAR2(100 BYTE) NOT NULL UNIQUE,
     JOINED_AT DATE,
     LEAVED_AT DATE
 );
 
 -- 휴면계정 -> 하루에 한 번씩 자동으로 처리될 수 있게 schedule 처리
-DROP TABLE SLEEP_USER;
-CREATE TABLE SLEEP_USER (
+DROP TABLE SLEEP_USER_T;
+CREATE TABLE SLEEP_USER_T (
     USER_NO NUMBER NOT NULL,
     ID              VARCHAR2(40 BYTE) NOT NULL UNIQUE, -- id 정규식에 반영
     PW              VARCHAR2(64 BYTE) NOT NULL,        -- SHA256 암호화 방식 사용

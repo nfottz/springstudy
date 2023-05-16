@@ -22,15 +22,21 @@
   // 모두 동의
   function fnCheckAll(){
 	  $('#checkAll').on('click', function(event){
-		  
+		  $('.checkOne').prop('checked', $(this).prop('checked'));
 	  })
   }
   
   // 개별 선택
   function fnCheckOne(){
-	  $('.checkOne').on('click', function(){
-		  
-	  })
+		  let chkOne = $('.checkOne');
+		  chkOne.on('click', function(){
+			  let chkCnt = 0;
+			  for(let i = 0; i < chkOne.length; i++){
+				  chkCnt += $(chkOne[i]).prop('checked');
+			  }
+			  $('#checkAll').prop('checked', chkCnt == chkOne.length);
+		  })
+
   }
   
   // 가입 페이지로 이동하기(frmAgree의 submit)

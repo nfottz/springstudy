@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class SleepUserDTO {
   
   private int userNo;
   private String id;
@@ -17,7 +17,6 @@ public class UserDTO {
   private String name;
   private String gender;
   private String email;
-  private String mobile;
   private String birthyear;
   private String birthdate;
   private String postcode;
@@ -25,7 +24,7 @@ public class UserDTO {
   private String jibunAddress;
   private String detailAddress;
   private String extraAddress;
-  private int agreeCode;
+  private int agreecode;
   private Date joinedAt;
   private Date pwModifiedAt;
   private String autologinId;
