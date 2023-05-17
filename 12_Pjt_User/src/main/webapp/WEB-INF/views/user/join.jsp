@@ -77,12 +77,56 @@
   }
   
   // 3. 비밀번호 확인
+  function fnCheckPwAgain(){
+	  
+	  $('#rePw').on('keyup', function(){
+		  
+		  let pw = $('#pw').val();
+		  let rePw = $(this).val();
+		  
+		  verifyRePw = (rePw != '') && (rePw == pw);
+		  if(verifyRePw){
+			  $('#msgRePw').text('');
+		  } else {
+			  $('#msgRePw').text('비밀번호 입력을 확인하세요.');
+		  }
+		  
+	  })
+	  
+  }
   
   // 4. 이름
+  function fnCheckName(){
+	  
+	  $('#name').on('keyup', function(){
+		  verifyName = $(this).val() != '';
+	  })
+	  
+  }
   
   // 5. 휴대전화
+  function fnCheckMobile(){
+	  
+	  $('#mobile').on('keyup', function(){
+		  
+		  let mobile = $(this).val();
+		  let regMobile = /^010[0-9]{7,8}$/;
+		  
+		  verifyMobile = regMobile.test(mobile);
+		  if(verifyMobile){
+			  $('#msgMobile').text('');
+		  } else {
+			  $('#msgMobile').text('휴대전화 입력을 확인하세요.');
+		  }
+		  
+	  })
+	  
+  }
   
   // 6. 년/월/일(select option 만들기, 월에 따라 보이는 일이 다르게)
+  function fnCreateDate(){
+	  
+  }
   
   // 7. 이메일 검사 및 인증코드 전송
   function fnCheckEmail(){
@@ -185,6 +229,40 @@
 		  // number == 2 인 경우 이메일 중복 체크 실패 메시지
 	  })
 	  */
+  }
+  
+  // 8. 회원가입
+  function fnJoin(){
+	  
+	  $('#frmJoin').on('submit', function(event){
+		  
+		  if(verifyId == false){
+			  alert('아이디를 확인하세요.');
+			  event.preventDefault();
+			  return;
+		  } else if(verifyPw == false || verifyRePw == false){
+			  alert('비밀번호를 확인하세요.');
+			  event.preventDefault();
+			  return;
+		  } else if(verifyName == false){
+			  alert('이름을 확인하세요.');
+			  event.preventDefault();
+        return;
+		  } else if(verifyMobile == false){
+	        alert('휴대전화번호를 확인하세요.');
+	        event.preventDefault();
+	        return;
+      } else if($('#birthyear').val() == '' || $('#birthmonth').val() == '' || $('#birthdate').val() == ''){
+	        alert('생년월일을 확인하세요.');
+	        event.preventDefault();
+	        return;
+      } else if(verifyEmail == false){
+	        alert('가입을 위해서 이메일 인증이 필요합니다.');
+	        event.preventDefault();
+	        return;
+	      }
+	  })
+	  
   }
   
   // 함수 호출

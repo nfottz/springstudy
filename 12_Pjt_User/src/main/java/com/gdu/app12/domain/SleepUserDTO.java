@@ -17,6 +17,7 @@ public class SleepUserDTO {
   private String name;
   private String gender;
   private String email;
+  private String mobile;
   private String birthyear;
   private String birthdate;
   private String postcode;
@@ -27,7 +28,6 @@ public class SleepUserDTO {
   private int agreecode;
   private Date joinedAt;
   private Date pwModifiedAt;
-  private String autologinId;
-  private Date autologinExpiredAt;
+  private Date sleptAt;
   
 }

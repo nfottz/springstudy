@@ -25,7 +25,7 @@ public class UserDTO {
   private String jibunAddress;
   private String detailAddress;
   private String extraAddress;
-  private int agreeCode;
+  private int agreecode;
   private Date joinedAt;
   private Date pwModifiedAt;
   private String autologinId;
