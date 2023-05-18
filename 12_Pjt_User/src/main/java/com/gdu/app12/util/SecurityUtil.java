@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecurityUtil {
 
-  // 크로스 사이트 스크립팅(Cross Site Scriptin) 방지하기
+  // 크로스 사이트 스크립팅(Cross Site Scripting) 방지하기
   public String preventXSS(String str) {
     str = str.replace("<", "&lt;");
     str = str.replace(">", "&gt;");
-    return null;
+    return str;
   }
   
   // 인증코드 반환하기

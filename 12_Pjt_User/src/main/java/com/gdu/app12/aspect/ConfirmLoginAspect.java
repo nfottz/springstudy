@@ -56,4 +56,9 @@ public class ConfirmLoginAspect {
     
   }
   
+  /*
+     ConfirmLoginAspect 실행 이후에 컨트롤러의 메소드가 실행되기 때문에
+     컨트롤러의 메소드 실행을 막을 수 있는 인터셉터로 변경한다. (사용되지 않는 클래스)
+  */
+  
 }
