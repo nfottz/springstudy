@@ -44,7 +44,7 @@
           <input type="checkbox" id="chkRememberId">
           아이디 기억
         </label>
-        <label for="autoLogin">
+        <label for="chkAutoLogin">
           <input type="checkbox" name="chkAutoLogin" id="chkAutoLogin">
           자동 로그인
         </label>

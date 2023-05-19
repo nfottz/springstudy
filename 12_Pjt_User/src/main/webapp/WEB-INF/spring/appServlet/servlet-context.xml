@@ -29,19 +29,24 @@
 	 <interceptor>
 	   <mapping path="/user/logout.do"/>
 	   <mapping path="/user/leave.do"/>
-	   <beans:bean class="com.gdu.app12.intercept.LoginCheckInterceptor"></beans:bean>
+	   <beans:bean class="com.gdu.app12.intercept.LoginCheckInterceptor" />
 	 </interceptor>
 	 
 	 <interceptor>
 	   <mapping path="/user/login.form" />
 	   <mapping path="/user/agree.form" />
 	   <mapping path="/user/join/form" />
-	   <beans:bean class="com.gdu.app12.intercept.PreventLoginInterceptor"></beans:bean>
+	   <beans:bean class="com.gdu.app12.intercept.PreventLoginInterceptor" />
 	 </interceptor>
 	 
 	 <interceptor>
 	   <mapping path="/user/login.do" />
-	   <beans:bean class="com.gdu.app12.intercept.SleepUserCheckInterceptor"></beans:bean>
+	   <beans:bean class="com.gdu.app12.intercept.SleepUserCheckInterceptor" />
+	 </interceptor>
+	 
+	 <interceptor>
+	   <mapping path="/**" />
+	   <beans:bean class="com.gdu.app12.intercept.AutologinInterceptor" />
 	 </interceptor>
 	 
 	</interceptors>

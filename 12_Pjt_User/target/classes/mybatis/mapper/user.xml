@@ -106,6 +106,24 @@
        SET LAST_LOGIN_AT = SYSDATE
      WHERE ID = #{id}
   </update>
+  <update id="insertAutologin" parameterType="UserDTO">
+    UPDATE USER_T
+       SET AUTOLOGIN_ID = #{autologinId}
+         , AUTOLOGIN_EXPIRED_AT = #{autologinExpiredAt}
+     WHERE ID = #{id}
+  </update>
+  <update id="deleteAutologin" parameterType="String">
+    UPDATE USER_T
+       SET AUTOLOGIN_ID = NULL
+         , AUTOLOGIN_EXPIRED_AT = NULL
+     WHERE ID = #{id}
+  </update>
+  <select id="selectAutologin" parameterType="String" resultType="UserDTO">
+    SELECT ID
+      FROM USER_T
+     WHERE AUTOLOGIN_ID = #{autologinId}
+       AND AUTOLOGIN_EXPIRED_AT > SYSDATE
+  </select>
 
   <insert id="insertLeaveUser" parameterType="LeaveUserDTO">
     INSERT INTO LEAVE_USER_T (
