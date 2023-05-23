@@ -126,8 +126,6 @@ public class UserServiceImpl implements UserService {
     userDTO.setDetailAddress(detailAddress);
     userDTO.setExtraAddress(extraAddress);
     userDTO.setAgreecode(agreecode);
-    
-    System.out.println("이르만을만ㅇ름ㄴㅇㄻㄴㅇㄻㄴㅇㄹ" + userDTO.getName());
 
     // 회원가입(UserDTO를 DB로 보내기)
     int joinResult = userMapper.insertUser(userDTO);
