@@ -6,10 +6,11 @@
 <!-- namespace는 @Mapper를 지정한다. -->
 <mapper namespace="com.gdu.app13.mapper.MemberMapper">
 
-  <select id="selectMemberByMap" parameterType="Map" resultType="MemberDTO">
-    SELECT MEMBER_NO, ID, PW, NAME
-      FROM MEMBER_T
-     WHERE ID = #{id} AND PW = #{pw}
-  </select>
+	<select id="selectMemberByMap" parameterType="Map" resultType="MemberDTO">
+		SELECT MEMBER_NO, ID, PW, NAME
+		  FROM MEMBER_T
+		 WHERE ID = #{id} AND PW = #{pw}
+	</select>
+	
 
 </mapper>

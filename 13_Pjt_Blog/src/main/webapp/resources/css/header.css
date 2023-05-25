@@ -1,9 +1,10 @@
 @charset "UTF-8";
 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-@import url('https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css')
 
 ul {
-  display: flex;
-  list-style-type: none;
+	display: flex;
+	list-style-type: none;
+	
 }

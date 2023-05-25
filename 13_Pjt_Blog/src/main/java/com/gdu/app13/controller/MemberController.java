@@ -15,19 +15,19 @@ import com.gdu.app13.service.MemberService;
 @Controller
 public class MemberController {
 
-  @Autowired
-  private MemberService memberService;
-  
-  @PostMapping("/login.do")
-  public String login(HttpServletRequest request) {
-    memberService.login(request);
-    return "index";
-  }
-  
-  @GetMapping("/logout.do")
-  public String logout(HttpSession session) {
-    memberService.logout(session);
-    return "index";
-  }
-  
+	@Autowired
+	private MemberService memberService;
+	
+	@PostMapping("/login.do")
+	public String login(HttpServletRequest request) {  	// 서비스로 넘겨줄 정보
+		memberService.login(request);
+		return "index";								// 로그인이 끝났으면 인덱스로 돌아가자
+	}
+	
+	@GetMapping("/logout.do")
+	public String logout(HttpSession session) {
+		memberService.logout(session);
+		return "index";
+	}
+	
 }

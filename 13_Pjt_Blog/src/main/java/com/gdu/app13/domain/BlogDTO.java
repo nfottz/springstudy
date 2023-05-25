@@ -10,13 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BlogDTO {
-  
-  private int blogNo;
-  private String title;
-  private String content;
-  private int hit;
-  private Date createdAt;
-  private Date modifiedAt;
-  private MemberDTO memberDTO;  // private int memberNo 대신
-
+	private int blogNo;
+	private String title;
+	private String content;
+	private int hit;
+	private Date createdAt;
+	private Date modifiedAt;
+	private MemberDTO memberDTO; 	// private int memberNo;
 }
