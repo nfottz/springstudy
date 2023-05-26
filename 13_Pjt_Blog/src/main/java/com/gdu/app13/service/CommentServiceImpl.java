@@ -2,7 +2,6 @@ package com.gdu.app13.service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,10 +23,11 @@ public class CommentServiceImpl implements CommentService {
   
   @Override
   public Map<String, Object> addComment(HttpServletRequest request) {
-
+    
     String content = request.getParameter("content");
     int blogNo = Integer.parseInt(request.getParameter("blogNo"));
     int memberNo = Integer.parseInt(request.getParameter("memberNo"));
+    
     MemberDTO memberDTO = new MemberDTO();
     memberDTO.setMemberNo(memberNo);
     CommentDTO commentDTO = new CommentDTO();
@@ -39,6 +39,7 @@ public class CommentServiceImpl implements CommentService {
     map.put("isAdd", commentMapper.addComment(commentDTO) == 1);
     
     return map;
+    
   }
 
   @Override
@@ -49,11 +50,14 @@ public class CommentServiceImpl implements CommentService {
 
   @Override
   public Map<String, Object> getCommentList(HttpServletRequest request) {
+    
     int blogNo = Integer.parseInt(request.getParameter("blogNo"));
     int page = Integer.parseInt(request.getParameter("page"));
     int commentCount = commentMapper.getCommentCount(blogNo);
     int recordPerPage = 3;
+    
     pageUtil.setPageUtil(page, commentCount, recordPerPage);
+    
     Map<String, Object> map = new HashMap<String, Object>();
     map.put("blogNo", blogNo);
     map.put("begin", pageUtil.getBegin());
@@ -62,7 +66,18 @@ public class CommentServiceImpl implements CommentService {
     Map<String, Object> result = new HashMap<String, Object>();
     result.put("commentList", commentMapper.getCommentList(map));
     result.put("pageUtil", pageUtil);
+    
     return result;
+    
   }
 
 }
+
+
+
+
+
+
+
+
+
