@@ -46,15 +46,15 @@ public class BlogController {
 		return blogService.imageUpload(multipartRequest);
 	}
 	
-	@GetMapping("/incereaseHit.do")
-	public String increaseHit(@RequestParam(value="blogNo", required=false, defaultValue="0") int blogNo) {
-	  int increaseResult = blogService.increseHit(blogNo);
-	  if(increaseResult == 1) {
-	    return "redirect:/blog/detail.do";	    
-	  } else {
-	    return "redirect:/blog/list.do";
-	  }
-	}
+	@GetMapping("/increaseHit.do")
+  public String increseHit(@RequestParam(value="blogNo", required=false, defaultValue="0") int blogNo) {
+    int increaseResult = blogService.increaseHit(blogNo);
+    if(increaseResult == 1) {
+      return "redirect:/blog/detail.do?blogNo=" + blogNo;
+    } else {
+      return "redirect:/blog/list.do";
+    }
+  }
 	
 	@GetMapping("/detail.do")
 	public String detail(@RequestParam(value="blogNo", required=false, defaultValue="0") int blogNo, Model model) {

@@ -167,7 +167,7 @@ public class BlogServiceImpl implements BlogService {
 	}
 	
 	@Override
-	public int increseHit(int blogNo) {
+	public int increaseHit(int blogNo) {
 	  return blogMapper.increaseHit(blogNo);
 	}
 	

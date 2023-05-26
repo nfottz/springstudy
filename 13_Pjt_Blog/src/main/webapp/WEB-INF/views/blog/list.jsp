@@ -19,39 +19,40 @@
 		</div>
 	</c:if>
 	
-  <div>
-    <table border="1">
-      <caption style="text-align: center;">${pagination }</caption>
-      <thead>
-        <tr>
-          <td>번호</td>
-          <td>제목</td>
-          <td>조회수</td>
-          <td>작성자</td>
-          <td>작성일</td>
-        </tr>
-      </thead>
-      <tbody>
-        <c:forEach items="${blogList }" var="blog" varStatus="vs">
-          <tr>
-            <td>${beginNo - vs.index }</td>
-            <td>
-              <c:if test="${sessionScope.loginId eq blog.memberDTO.id }">
-                <a href="${contextPath }/blog/detail.do?blogNo=${blog.blogNo}">${blog.title }</a>
-              </c:if>
-              <c:if test="${sessionScope.loginId eq blog.memberDTO.id }">
-                <a href="${contextPath }/blog/incereaseHit.do?blogNo=${blog.blogNo}">${blog.title }</a>
-              </c:if>
-            </td>
-            <td>${blog.hit }</td>
-            <td>${blog.memberDTO.id }</td>
-            <td>${blog.createdAt }</td>
-          </tr>
-        </c:forEach>
-      </tbody>
-    </table>
-  </div>
-  
+<div>
+      <table border="1">
+         <caption style="text-align: center;">${pagination}</caption>
+         <thead>
+            <tr>
+               <td>번호</td>
+               <td>제목</td>
+               <td>조회수</td>
+               <td>작성자</td>
+               <td>작성일</td>
+            </tr>
+         </thead>
+         <tbody>
+            <c:forEach items="${blogList}" var="blog" varStatus="vs">
+               <tr>
+                  <td>${beginNo - vs.index}</td>
+                  <td>
+                     <!-- 내가 작성한 블로그는 조회수가 증가하지 않는다. -->
+                     <c:if test="${sessionScope.loginId eq blog.memberDTO.id}">
+                        <a href="${contextPath}/blog/detail.do?blogNo=${blog.blogNo}">${blog.title}</a>
+                     </c:if>
+                     <c:if test="${sessionScope.loginId ne blog.memberDTO.id}">
+                       <a href="${contextPath}/blog/increaseHit?blogNo=${blog.blogNo}">${blog.title}</a>
+                     </c:if>
+                  </td>
+                  <td>${blog.hit}</td>
+                  <td>${blog.memberDTO.id}</td>
+                  <td>${blog.createdAt}</td>
+               </tr>
+            </c:forEach>
+         </tbody>
+      </table>
+   </div>
+   
 </div>
 
 <script>
